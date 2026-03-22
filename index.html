@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestCalc - Moreirajs</title>
+    <style>
+        /* CSS para um visual profissional e limpo */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 350px; }
+        h2 { color: #333; text-align: center; margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; color: #666; font-size: 14px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; margin-top: 20px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background-color: #218838; }
+        .result-area { margin-top: 20px; padding: 15px; background: #f8f9fa; border-left: 5px solid #28a745; display: none; }
+        .result-area p { margin: 5px 0; color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Simulador de Juros</h2>
+    
+    <label>Aporte Inicial (R$)</label>
+    <input type="number" id="capital" placeholder="Ex: 1000">
+
+    <label>Taxa de Juros Mensal (%)</label>
+    <input type="number" id="taxa" placeholder="Ex: 1">
+
+    <label>Período (Meses)</label>
+    <input type="number" id="tempo" placeholder="Ex: 12">
+
+    <button onclick="calcular()">Calcular Retorno</button>
+
+    <div id="resultado" class="result-area">
+        <p id="total-final"></p>
+        <p id="apenas-juros" style="font-size: 13px; color: #666;"></p>
+    </div>
+</div>
+
+<script>
+    function calcular() {
+        // Captura dos valores e conversão para números
+        const p = parseFloat(document.getElementById('capital').value);
+        const i = parseFloat(document.getElementById('taxa').value) / 100;
+        const n = parseInt(document.getElementById('tempo').value);
+
+        if (isNaN(p) || isNaN(i) || isNaN(n)) {
+            alert("Por favor, preencha todos os campos corretamente.");
+            return;
+        }
+
+        // Fórmula de Juros Compostos: M = P * (1 + i)^n
+        const m = p * Math.pow((1 + i), n);
+        const juros = m - p;
+
+        // Exibição dos resultados formatados em Moeda Brasileira
+        const resArea = document.getElementById('resultado');
+        resArea.style.display = 'block';
+
+        document.getElementById('total-final').innerHTML = 
+            `Total: <strong>${m.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>`;
+        
+        document.getElementById('apenas-juros').innerHTML = 
+            `Total em Juros: ${juros.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+    }
+</script>
+
+</body>
+</html>
